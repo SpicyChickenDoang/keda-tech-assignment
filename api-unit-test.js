@@ -2,7 +2,7 @@ const axios = require('axios')
 
 // API Unit Testing without framework
 
-async function onSubmit() {
+async function insertRecord() {
 
     let vehicleType = "pesawat"
     let inTime = new Date('2022-11-25T17:11')
@@ -30,7 +30,7 @@ async function onSubmit() {
     return 0
 };
 
-// onSubmit()
+insertRecord()
 
 async function loadRecords() {
 
@@ -48,8 +48,6 @@ async function loadRecords() {
 }
 
 loadRecords()
-
-
 
 
 async function loadFilteredRecords() {
@@ -81,6 +79,6 @@ async function loadFilteredRecords() {
     return
 }
 
-// loadFilteredRecords()
+loadFilteredRecords()
 
 

@@ -29,7 +29,7 @@
 
             <button id="submit"><a href="./records.html">Records</a></button>
 
-            <button type="submit" id="submit" onclick="onSubmit()">Submit</button>
+            <button type="submit" id="submit" onclick="insertRecord()">Submit</button>
 
             <!-- warning message: logout time should be bigger than login time -->
         </form>
@@ -49,7 +49,7 @@
 
     // const axios = require('axios')
 
-    function onSubmit() {
+    function insertRecord() {
 
         let vehicleType = document.getElementById("vehicle").value;
         console.log(vehicleType)
