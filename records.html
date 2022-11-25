@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Records Parking System</title>
+</head>
+
+<body>
+    <h1>Simple Parking System</h1>
+    <h2>Parking Records</h2>
+    <form>
+        <div>
+            <input type="checkbox" id="mobilCb"><label> Mobil</label>
+            <input type="checkbox" id="motorCb"><label> Motor</label>
+            <label> Login Time</label><input type="datetime-local" id="loginId">
+            <label> Logout Time</label><input type="datetime-local" id="logoutId">
+        </div>
+
+        <div>
+            <label> Min Cost</label><input type="number" id="minCost" step="1000">
+            <label> Max Cost</label><input type="number" id="maxCost" step="1000">
+        </div>
+
+
+    </form>
+
+    <!-- <input type="range"><br> -->
+    <div>
+        <button id="submit" class="specmargin" onclick="loadFilteredRecords()">Show Filtered Records</button>
+        <button id="submit" class="specmargin" onclick="loadRecords()">Show All Records</button>
+        <button id="submit" class="specmargin"><a href="./index.html">Insert New Records</a></button>
+    </div>
+
+
+    <table id="tables" class="table"></table>
+</body>
+
+</html>
+
+<script src="./node_modules/axios/dist/axios.min.js"></script>
+<script>
+
+    function loadRecords() {
+        let li = `<tr><th>Data ID</th><th>Vehicle Type</th><th>Login Time</th><th>Logout Time</th><th>Parking Cost</th></tr>`;
+
+        axios.get('http://localhost:3000/all-records').then((res) => {
+            console.log(res.data);
+
+            res.data.forEach((user) => {
+                li += `<tr>
+                <td>${user.row_id}</td>
+                <td>${user.vehicle_type[0].toUpperCase() + user.vehicle_type.slice(1)}</td>
+                <td>${user.login_time} </td>
+                <td>${user.logout_time}</td>
+                <td>${user.parking_cost}</td>
+                    </tr>`;
+            });
+
+            document.getElementById("tables").innerHTML = li;
+
+        })
+            .catch((err) => {
+                console.log(err.message);
+            });
+
+        return
+    }
+
+    function loadFilteredRecords() {
+
+        let mobilCb = document.getElementById('mobilCb').checked
+        let motorCb = document.getElementById('motorCb').checked
+
+
+        const minimumDate = new Date(Date.now() - 12096e5)
+        let loginId = document.getElementById('loginId').value || minimumDate.toISOString()
+        // let loginId = document.getElementById('loginId').value || currentDate.toISOString().split('T')[1]
+        let logoutId = document.getElementById('logoutId').value || new Date().toISOString()
+
+        let minCost = document.getElementById('minCost').value || 3000
+        let maxCost = document.getElementById('maxCost').value || 1000000
+
+        let li = `<tr><th>Data ID</th><th>Vehicle Type</th><th>Login Time</th><th>Logout Time</th><th>Parking Cost</th></tr>`;
+
+        axios.post('http://localhost:3000/records', {
+            mobilCb: mobilCb,
+            motorCb: motorCb,
+            loginId: loginId,
+            logoutId: logoutId,
+            minCost: minCost,
+            maxCost: maxCost
+        }).then((res) => {
+            // console.log(res.data);
+
+            res.data.forEach((user) => {
+
+                li += `<tr>
+                <td>${user.row_id}</td>
+                <td>${user.vehicle_type}</td>
+                <td>${user.login_time} </td>
+                <td>${user.logout_time}</td>
+                <td>${user.parking_cost}</td>
+                    </tr>`;
+            })
+            document.getElementById("tables").innerHTML = li
+        })
+            .catch((err) => {
+                console.log(err.message);
+            });
+
+        return
+    }
+
+
+</script>
+
+<style>
+    * {
+        padding: 10px 10px;
+        margin: auto;
+        /* width: 30px;
+        height: 30px; */
+        /* border: 3px solid green; */
+        /* margin-inline: 20px; */
+        text-align: center;
+    }
+
+    .specmargin {
+        margin-inline: 20px;
+    }
+
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    #submit {
+        width: 13rem;
+        height: 3rem;
+        margin-bottom: 3rem;
+    }
+</style>

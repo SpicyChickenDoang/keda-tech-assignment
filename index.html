@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Parking System</title>
+</head>
+
+<body>
+
+    <div>
+        <h1>Simple Parking System</h1>
+        <h2>Insert New Log</h2>
+        <label for="vehicle" style="padding: 0px 100px 0px 0px">Vehicle Type:</label>
+        <select name="vehicle" id="vehicle">
+            <!-- <option value="non">Select Vehicle</option> -->
+            <option value="mobil">Mobil</option>
+            <option value="motor">Motor</option>
+        </select>
+
+        <form onsubmit="return false">
+            <label for="masuk">Login Time:</label>
+            <input type="datetime-local" id="wMasuk" name="wMasuk"><br><br>
+            <!-- <input type="datetime-local" step="1" id="wMasuk" name="wMasuk"><br><br> -->
+            <label for="keluar">Logout Time:</label>
+            <input type="datetime-local" id="wKeluar" name="wKeluar"><br><br>
+
+            <button id="submit"><a href="./records.html">Records</a></button>
+
+            <button type="submit" id="submit" onclick="onSubmit()">Submit</button>
+
+            <!-- warning message: logout time should be bigger than login time -->
+        </form>
+
+    </div>
+
+
+</body>
+
+
+
+
+</html>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+<script src="./node_modules/axios/dist/axios.min.js"></script>
+<script>
+
+    // const axios = require('axios')
+
+    function onSubmit() {
+
+        let vehicleType = document.getElementById("vehicle").value;
+        console.log(vehicleType)
+
+        let inTime = document.getElementById("wMasuk").value;
+        // inTime = new Date(inTime)
+        console.log(inTime)
+
+        let outTime = document.getElementById("wKeluar").value;
+        // outTime = new Date(outTime)
+        console.log(outTime)
+
+        if (outTime > inTime) {
+            let totalTime = ((outTime - inTime) / 360000).toFixed(2)
+            totalTime = parseFloat(totalTime)
+        } else {
+            console.error('bad timing');
+            return 0
+        }
+
+        axios.post('http://localhost:3000/new', {
+            type: vehicleType,
+            clockIn: inTime,
+            clockOut: outTime,
+        }).then((res) => {
+            console.log(res);
+        })
+            .catch((err) => {
+                console.log(err.message);
+            });
+
+        return 0
+    };
+
+
+</script>
+<style>
+    * {
+        padding: 10px 10px;
+        /* padding: 10px 10px; */
+        /* margin: 10px 10px 10px 10px; */
+        margin: auto;
+        margin-inline: 20px;
+        /* width: 30px;
+        height: 30px; */
+        /* border: 3px solid green; */
+        text-align: center;
+    }
+
+    #submit {
+        width: 8rem;
+        height: 3rem;
+    }
+</style>
