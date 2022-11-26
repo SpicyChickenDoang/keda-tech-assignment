@@ -43,11 +43,9 @@
 
 
 </html>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+
 <script src="./node_modules/axios/dist/axios.min.js"></script>
 <script>
-
-    // const axios = require('axios')
 
     function insertRecord() {
 
@@ -55,11 +53,9 @@
         console.log(vehicleType)
 
         let inTime = document.getElementById("wMasuk").value;
-        // inTime = new Date(inTime)
         console.log(inTime)
 
         let outTime = document.getElementById("wKeluar").value;
-        // outTime = new Date(outTime)
         console.log(outTime)
 
         if (outTime > inTime) {
@@ -70,7 +66,7 @@
             return 0
         }
 
-        axios.post('http://localhost:3000/new', {
+        axios.post('http://localhost:3099/new', {
             type: vehicleType,
             clockIn: inTime,
             clockOut: outTime,
@@ -89,13 +85,8 @@
 <style>
     * {
         padding: 10px 10px;
-        /* padding: 10px 10px; */
-        /* margin: 10px 10px 10px 10px; */
         margin: auto;
         margin-inline: 20px;
-        /* width: 30px;
-        height: 30px; */
-        /* border: 3px solid green; */
         text-align: center;
     }
 

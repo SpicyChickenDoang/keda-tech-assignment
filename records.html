@@ -74,10 +74,9 @@
         let mobilCb = document.getElementById('mobilCb').checked
         let motorCb = document.getElementById('motorCb').checked
 
-
+        // minimumDate is current date minus 2 weeks
         const minimumDate = new Date(Date.now() - 12096e5)
         let loginId = document.getElementById('loginId').value || minimumDate.toISOString()
-        // let loginId = document.getElementById('loginId').value || currentDate.toISOString().split('T')[1]
         let logoutId = document.getElementById('logoutId').value || new Date().toISOString()
 
         let minCost = document.getElementById('minCost').value || 3000
@@ -93,7 +92,6 @@
             minCost: minCost,
             maxCost: maxCost
         }).then((res) => {
-            // console.log(res.data);
 
             res.data.forEach((user) => {
 
@@ -121,10 +119,6 @@
     * {
         padding: 10px 10px;
         margin: auto;
-        /* width: 30px;
-        height: 30px; */
-        /* border: 3px solid green; */
-        /* margin-inline: 20px; */
         text-align: center;
     }
 

@@ -1,5 +1,5 @@
 const pg = require('pg')
-const { config } = require('./config')
+const { config } = require('./db/config')
 
 const pool = new pg.Pool(config);
 
@@ -7,6 +7,8 @@ pool.on('error', (err) => {
     console.error('Unexpected error on idle client', err);
     // process.exit(-1);
 });
+
+const conString = "postgres://postgres:1234@localhost/parking";
 
 exports.getParkingRecords = (cb) => {
 
@@ -18,7 +20,8 @@ exports.getParkingRecords = (cb) => {
         if (err) return console.log(err.message);
         client.query(sql, async(err, res) => {
             console.log('inside query - GET');
-            done()
+            // done()
+            client.end;
 
             if (err) {
                 console.log(err.stack)
@@ -27,6 +30,23 @@ exports.getParkingRecords = (cb) => {
             }
         })
     })
+
+    // pg.connect(conString, function(err, client, done) {
+    //     if(err) {
+    //       return console.error('error fetching client from pool', err);
+    //     }
+    //     client.query('SELECT * FROM public.parkingrecord;', function(err, result) {
+    //       //call `done()` to release the client back to the pool
+    //       done();
+      
+    //       if(err) {
+    //         return console.error('error running query', err);
+    //       }
+    //       console.log(result.rows);
+    //       return cb(result.rows)
+    //       //output: 1
+    //     });
+    //   });
 
 }
 

@@ -16,7 +16,7 @@ async function insertRecord() {
         return 0
     }
 
-    axios.post('http://localhost:3000/new', {
+    axios.post('http://localhost:3099/new', {
         type: vehicleType,
         clockIn: inTime,
         clockOut: outTime,
@@ -34,7 +34,7 @@ insertRecord()
 
 async function loadRecords() {
 
-    axios.get('http://localhost:3000/all-records').then((res) => {
+    axios.get('http://localhost:3099/all-records').then((res) => {
         console.table(res.data);
         return
 
@@ -62,7 +62,7 @@ async function loadFilteredRecords() {
     let minCost = 5000
     let maxCost = 1000000
 
-    await axios.post('http://localhost:3000/records', {
+    await axios.post('http://localhost:3099/records', {
         mobilCb: mobilCb,
         motorCb: motorCb,
         loginId: loginId,
@@ -79,6 +79,6 @@ async function loadFilteredRecords() {
     return
 }
 
-loadFilteredRecords()
+// loadFilteredRecords()
 
 
