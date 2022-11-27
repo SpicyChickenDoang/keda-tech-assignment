@@ -41,67 +41,15 @@ const newRecords = (req, res) => {
 }
 
 const getRecords = (req, res) => {
-
+    // console.log('inside log records');
     try {
-
         posgre.getParkingRecords((values) => {
-
+            // console.log(values);
             return res.json(values)
         })
     } catch (error) {
         return error.message
     }
-
-}
-
-const getRecordsWithFilter = (req, res) => {
-
-    try {
-
-        const mobilCb = req.body.mobilCb
-        const motorCb = req.body.motorCb
-        let loginDate = req.body.loginId
-        let logoutDate = req.body.logoutId
-        const minCost = parseInt(req.body.minCost)
-        const maxCost = parseInt(req.body.maxCost)
-        let finalResult = new Array()
-        let finalsResult = new Array()
-
-        posgre.getParkingRecords((values) => {
-
-            for (let i = 0; i < values.length; i++) {
-
-                if (minCost <= parseInt(values[i].parking_cost) && maxCost >= parseInt(values[i].parking_cost)) {
-                    if (mobilCb == true && values[i].vehicle_type == 'mobil' && !finalResult.includes(values[i].row_id))
-                        finalResult.push(values[i])
-
-                    if (motorCb == true && values[i].vehicle_type == 'motor' && !finalResult.includes(values[i].row_id))
-                        finalResult.push(values[i])
-
-                    if (mobilCb == false && motorCb == false && !finalResult.includes(values[i].row_id))
-                        finalResult.push(values[i])
-                }
-            }
-
-            for (let i = 0; i < finalResult.length; i++) {
-                loginDate = new Date(loginDate)
-                logoutDate = new Date(logoutDate)
-                console.log(loginDate < finalResult[i].login_time, logoutDate > finalResult[i].logout_time);
-                
-                // finalResult[i].login_time = new Date(finalResult[i].login_time)
-                if (loginDate < finalResult[i].login_time && logoutDate > finalResult[i].logout_time) {
-                    finalsResult.push(finalResult[i])
-                }
-            }
-            
-            console.log(finalsResult);
-
-            return res.json(finalsResult)
-        })
-    } catch (error) {
-        return error.message
-    }
-
 }
 
 const parkingCost = (totalTime, vehicleType) => {
@@ -138,7 +86,6 @@ const parkingCost = (totalTime, vehicleType) => {
 }
 
 app.post('/new', newRecords)
-app.post('/records', getRecordsWithFilter)
 app.get('/all-records', getRecords)
 
 

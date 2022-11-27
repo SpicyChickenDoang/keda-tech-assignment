@@ -30,7 +30,7 @@
     <!-- <input type="range"><br> -->
     <div>
         <button id="submit" class="specmargin" onclick="loadFilteredRecords()">Show Filtered Records</button>
-        <button id="submit" class="specmargin" onclick="loadRecords()">Show All Records</button>
+        <button id="submit" class="specmargin" onclick="allRecords()">Show All Records</button>
         <button id="submit" class="specmargin"><a href="./index.html">Insert New Records</a></button>
     </div>
 
@@ -43,29 +43,29 @@
 <script src="./node_modules/axios/dist/axios.min.js"></script>
 <script>
 
-    function loadRecords() {
-        let li = `<tr><th>Data ID</th><th>Vehicle Type</th><th>Login Time</th><th>Logout Time</th><th>Parking Cost</th></tr>`;
+    let fullRecords = []
 
-        axios.get('http://localhost:3000/all-records').then((res) => {
+    function loadRecords() {
+        console.log('inside loadRecords');
+        axios.get('http://localhost:3099/all-records').then((res) => {
             console.log(res.data);
 
-            res.data.forEach((user) => {
-                li += `<tr>
-                <td>${user.row_id}</td>
-                <td>${user.vehicle_type[0].toUpperCase() + user.vehicle_type.slice(1)}</td>
-                <td>${user.login_time} </td>
-                <td>${user.logout_time}</td>
-                <td>${user.parking_cost}</td>
-                    </tr>`;
-            });
-
-            document.getElementById("tables").innerHTML = li;
+            fullRecords = res.data
+            return isnertDataToTable(fullRecords)
+            // return fullRecords
 
         })
             .catch((err) => {
-                console.log(err.message);
+                return console.log(err.message);
             });
 
+    }
+
+    function allRecords(){
+        console.log('inside all records');
+        if (fullRecords.length < 1) loadRecords()
+        
+        isnertDataToTable(fullRecords)
         return
     }
 
@@ -82,33 +82,59 @@
         let minCost = document.getElementById('minCost').value || 3000
         let maxCost = document.getElementById('maxCost').value || 1000000
 
+        let finalResult = new Array()
+        let finalsResult = new Array()
+
+        if (!fullRecords) loadRecords()
+
+        let values = fullRecords
+        for (let i = 0; i < values.length; i++) {
+            for (let i = 0; i < values.length; i++) {
+
+                if (minCost <= parseInt(values[i].parking_cost) && maxCost >= parseInt(values[i].parking_cost)) {
+                    if (mobilCb == true && values[i].vehicle_type == 'mobil' && !finalResult.includes(values[i].row_id))
+                        finalResult.push(values[i])
+
+                    if (motorCb == true && values[i].vehicle_type == 'motor' && !finalResult.includes(values[i].row_id))
+                        finalResult.push(values[i])
+
+                    if (mobilCb == false && motorCb == false && !finalResult.includes(values[i].row_id))
+                        finalResult.push(values[i])
+                }
+            }
+
+            for (let i = 0; i < finalResult.length; i++) {
+                loginDate = new Date(loginDate)
+                logoutDate = new Date(logoutDate)
+                // console.log(loginDate < finalResult[i].login_time, logoutDate > finalResult[i].logout_time);
+
+                // finalResult[i].login_time = new Date(finalResult[i].login_time)
+                if (loginDate < finalResult[i].login_time && logoutDate > finalResult[i].logout_time) {
+                    finalsResult.push(finalResult[i])
+                }
+            }
+
+        }
+        isnertDataToTable(finalsResult)
+        return
+
+}    
+
+    function isnertDataToTable(values) {
         let li = `<tr><th>Data ID</th><th>Vehicle Type</th><th>Login Time</th><th>Logout Time</th><th>Parking Cost</th></tr>`;
+        // console.log('inside insert: ', values);
+        values.forEach((user) => {
 
-        axios.post('http://localhost:3000/records', {
-            mobilCb: mobilCb,
-            motorCb: motorCb,
-            loginId: loginId,
-            logoutId: logoutId,
-            minCost: minCost,
-            maxCost: maxCost
-        }).then((res) => {
-
-            res.data.forEach((user) => {
-
-                li += `<tr>
+            li += `<tr>
                 <td>${user.row_id}</td>
                 <td>${user.vehicle_type}</td>
                 <td>${user.login_time} </td>
                 <td>${user.logout_time}</td>
                 <td>${user.parking_cost}</td>
                     </tr>`;
-            })
-            document.getElementById("tables").innerHTML = li
         })
-            .catch((err) => {
-                console.log(err.message);
-            });
 
+        document.getElementById("tables").innerHTML = li
         return
     }
 

@@ -13,19 +13,29 @@
     <div>
         <h1>Simple Parking System</h1>
         <h2>Insert New Log</h2>
-        <label for="vehicle" style="padding: 0px 100px 0px 0px">Vehicle Type:</label>
-        <select name="vehicle" id="vehicle">
-            <!-- <option value="non">Select Vehicle</option> -->
-            <option value="mobil">Mobil</option>
-            <option value="motor">Motor</option>
-        </select>
+
+        <div>
+            <label for="vehicle" style="padding: 0px 100px 0px 0px">Vehicle Type:</label>
+            <select name="vehicle" id="vehicle">
+                <!-- <option value="non">Select Vehicle</option> -->
+                <option value="mobil">Mobil</option>
+                <option value="motor">Motor</option>
+            </select>
+        </div>
+
 
         <form onsubmit="return false">
-            <label for="masuk">Login Time:</label>
-            <input type="datetime-local" id="wMasuk" name="wMasuk"><br><br>
+            <div>
+                <label for="masuk">Login Time:</label>
+                <input type="datetime-local" id="wMasuk" name="wMasuk">
+            </div>
+
             <!-- <input type="datetime-local" step="1" id="wMasuk" name="wMasuk"><br><br> -->
-            <label for="keluar">Logout Time:</label>
-            <input type="datetime-local" id="wKeluar" name="wKeluar"><br><br>
+            <div>
+                <label for="keluar">Logout Time:</label>
+                <input type="datetime-local" id="wKeluar" name="wKeluar">
+            </div>
+
 
             <button id="submit"><a href="./records.html">Records</a></button>
 
@@ -83,6 +93,11 @@
 
 </script>
 <style>
+
+    /* div{
+        border: 1px solid black;
+    } */
+
     * {
         padding: 10px 10px;
         margin: auto;
