@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const posgre = require('./postgre-functions')
+const posgre = require('./db/postgre-functions')
 
 app.use(
     cors({
