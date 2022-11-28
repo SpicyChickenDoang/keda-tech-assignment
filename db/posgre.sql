@@ -1,5 +1,3 @@
--- DROP TABLE IF EXISTS public.parkingrecord;
-
 CREATE TABLE IF NOT EXISTS public.parkingrecord
 (
     row_id smallint NOT NULL DEFAULT nextval('parkingrecord_row_id_seq'::regclass),
@@ -9,3 +7,8 @@ CREATE TABLE IF NOT EXISTS public.parkingrecord
     parking_cost bigint NOT NULL,
     CONSTRAINT parkingrecord_pkey PRIMARY KEY (row_id)
 )
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.parkingrecord
+    OWNER to postgres;
