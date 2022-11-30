@@ -1,4 +1,4 @@
-# keda-tech-assignment
+# recruitment-tech-assignment
 Assignment for Recruitment Process
 
 1. To install all dependencies
